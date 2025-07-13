@@ -1,5 +1,5 @@
 // Cüzdan bağlantısı bileşeni - Modern kripto UI
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 
 export function WalletConnect() {
   const [showConnectors, setShowConnectors] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   
   // Console log ekleyerek debug yapalım
   console.log('WalletConnect bileşeni render ediliyor...');
@@ -23,6 +24,23 @@ export function WalletConnect() {
     connectorsLength: connectors?.length || 0,
     isPending 
   });
+
+  // Dropdown dışına tıklandığında kapat
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowConnectors(false);
+      }
+    };
+
+    if (showConnectors) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showConnectors]);
 
   // Adres kısaltma fonksiyonu
   const formatAddress = (addr: string) => {
@@ -56,7 +74,7 @@ export function WalletConnect() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <Button
         onClick={() => setShowConnectors(!showConnectors)}
         disabled={isPending}
@@ -71,14 +89,14 @@ export function WalletConnect() {
       </Button>
 
       {showConnectors && connectors && connectors.length > 0 && (
-        <Card className="absolute top-12 right-0 w-64 p-4 bg-card/95 backdrop-blur-md border-primary/20 shadow-xl z-50">
+        <Card className="absolute top-12 right-0 w-64 p-4 bg-card border-primary/20 shadow-2xl z-[9999] backdrop-blur-md">
           <div className="space-y-3">
             <h3 className="font-semibold text-sm text-foreground">Cüzdan Seçin</h3>
             {connectors.map((connector) => (
               <Button
                 key={connector.uid}
                 variant="outline"
-                className="w-full justify-start border-border/50 hover:border-primary/50 hover:bg-primary/10"
+                className="w-full justify-start border-border/50 hover:border-primary/50 hover:bg-primary/10 bg-card"
                 onClick={() => {
                   connect({ connector });
                   setShowConnectors(false);
