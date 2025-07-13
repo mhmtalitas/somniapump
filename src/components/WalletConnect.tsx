@@ -7,13 +7,26 @@ import { Wallet, Check, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function WalletConnect() {
+  const [showConnectors, setShowConnectors] = useState(false);
+  
+  // Console log ekleyerek debug yapalım
+  console.log('WalletConnect bileşeni render ediliyor...');
+  
+  // Hook'ları doğrudan kullanıyoruz - hata buradan geliyorsa görürüz
   const { address, isConnected } = useAccount();
   const { connect, connectors, isPending } = useConnect();
   const { disconnect } = useDisconnect();
-  const [showConnectors, setShowConnectors] = useState(false);
+  
+  console.log('WalletConnect - Hook sonuçları:', { 
+    isConnected, 
+    address, 
+    connectorsLength: connectors?.length || 0,
+    isPending 
+  });
 
   // Adres kısaltma fonksiyonu
   const formatAddress = (addr: string) => {
+    if (!addr) return '';
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
@@ -57,7 +70,7 @@ export function WalletConnect() {
         {isPending ? 'Bağlanıyor...' : 'Connect Wallet'}
       </Button>
 
-      {showConnectors && (
+      {showConnectors && connectors && connectors.length > 0 && (
         <Card className="absolute top-12 right-0 w-64 p-4 bg-card/95 backdrop-blur-md border-primary/20 shadow-xl z-50">
           <div className="space-y-3">
             <h3 className="font-semibold text-sm text-foreground">Cüzdan Seçin</h3>

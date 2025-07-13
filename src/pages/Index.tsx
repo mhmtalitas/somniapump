@@ -30,8 +30,13 @@ interface FormErrors {
 }
 
 const Index = () => {
+  console.log('Index bileşeni render ediliyor...');
+  
+  // Bu satırda hata oluyor - useAccount hook'u
   const { isConnected } = useAccount();
   const { toast } = useToast();
+  
+  console.log('Index - wagmi hook sonucu:', { isConnected });
   
   // Form durumu
   const [formData, setFormData] = useState<TokenFormData>({
