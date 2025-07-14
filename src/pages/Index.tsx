@@ -176,7 +176,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-background font-sans">
       {/* Header */}
-      <header className="relative z-10 p-6">
+      <header className="relative z-50 p-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-crypto rounded-lg flex items-center justify-center">
