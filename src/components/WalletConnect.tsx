@@ -57,7 +57,7 @@ export function WalletConnect() {
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             <Check className="w-4 h-4 text-green-400" />
             <span className="text-sm font-medium text-foreground">
-              Bağlandı: {formatAddress(address)}
+              Connected: {formatAddress(address)}
             </span>
           </div>
           <Button
@@ -66,7 +66,7 @@ export function WalletConnect() {
             onClick={() => disconnect()}
             className="text-xs border-primary/30 hover:border-primary/50 hover:bg-primary/10"
           >
-            Bağlantıyı Kes
+            Disconnect
           </Button>
         </div>
       </Card>
@@ -85,13 +85,13 @@ export function WalletConnect() {
         )}
       >
         <Wallet className="w-4 h-4 mr-2" />
-        {isPending ? 'Bağlanıyor...' : 'Connect Wallet'}
+        {isPending ? 'Connecting...' : 'Connect Wallet'}
       </Button>
 
       {showConnectors && connectors && connectors.length > 0 && (
         <Card className="absolute top-12 right-0 w-64 p-4 bg-card border-primary/20 shadow-2xl z-[9999] backdrop-blur-md">
           <div className="space-y-3">
-            <h3 className="font-semibold text-sm text-foreground">Cüzdan Seçin</h3>
+            <h3 className="font-semibold text-sm text-foreground">Select Wallet</h3>
             {connectors.map((connector) => (
               <Button
                 key={connector.uid}
@@ -110,7 +110,7 @@ export function WalletConnect() {
             <div className="pt-2 border-t border-border/30">
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <AlertCircle className="w-3 h-3" />
-                <span>Güvenli cüzdan bağlantısı</span>
+                <span>Secure wallet connection</span>
               </div>
             </div>
           </div>

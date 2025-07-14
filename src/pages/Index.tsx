@@ -60,24 +60,24 @@ const Index = () => {
     const newErrors: FormErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Token adı gereklidir';
+      newErrors.name = 'Token name is required';
     }
 
     if (!formData.symbol.trim()) {
-      newErrors.symbol = 'Token sembolü gereklidir';
+      newErrors.symbol = 'Token symbol is required';
     } else if (formData.symbol.length > 5) {
-      newErrors.symbol = 'Token sembolü en fazla 5 karakter olmalı';
+      newErrors.symbol = 'Token symbol must be 5 characters or less';
     }
 
     if (!formData.totalSupply.trim()) {
-      newErrors.totalSupply = 'Toplam arz gereklidir';
+      newErrors.totalSupply = 'Total supply is required';
     } else if (isNaN(Number(formData.totalSupply)) || Number(formData.totalSupply) <= 0) {
-      newErrors.totalSupply = 'Geçerli bir sayı giriniz';
+      newErrors.totalSupply = 'Please enter a valid number';
     }
 
     // Görsel validasyonu (opsiyonel)
     if (formData.image && formData.image.size > 5 * 1024 * 1024) {
-      newErrors.image = 'Görsel dosyası 5MB\'den küçük olmalıdır';
+      newErrors.image = 'Image file must be smaller than 5MB';
     }
 
     setErrors(newErrors);
@@ -91,8 +91,8 @@ const Index = () => {
     if (!isConnected) {
       toast({
         variant: "destructive",
-        title: "Cüzdan Bağlantısı Gerekli",
-        description: "Token oluşturmak için önce cüzdanınızı bağlayın.",
+        title: "Wallet Connection Required",
+        description: "Please connect your wallet first to create a token.",
       });
       return;
     }
@@ -118,8 +118,8 @@ const Index = () => {
       });
 
       toast({
-        title: "Token Başarıyla Oluşturuldu! 🎉",
-        description: `${formData.name} (${formData.symbol.toUpperCase()}) token'ı oluşturuldu.`,
+        title: "Token Created Successfully! 🎉",
+        description: `${formData.name} (${formData.symbol.toUpperCase()}) token has been created.`,
       });
 
       // Formu sıfırla
@@ -134,8 +134,8 @@ const Index = () => {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Token Oluşturma Hatası",
-        description: "Token oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.",
+        title: "Token Creation Error",
+        description: "An error occurred while creating the token. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -148,7 +148,7 @@ const Index = () => {
     if (file) {
       // Dosya tipini kontrol et
       if (!file.type.startsWith('image/')) {
-        setErrors(prev => ({ ...prev, image: 'Lütfen geçerli bir görsel dosyası seçin' }));
+        setErrors(prev => ({ ...prev, image: 'Please select a valid image file' }));
         return;
       }
 
@@ -196,12 +196,12 @@ const Index = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <Sparkles className="w-8 h-8 text-primary animate-pulse" />
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-crypto bg-clip-text text-transparent">
-                Yeni Token Oluştur
+                Create New Token
               </h1>
               <Sparkles className="w-8 h-8 text-accent animate-pulse" />
             </div>
             <p className="text-lg text-muted-foreground max-w-md mx-auto">
-              Token'ınızı birkaç adımda oluşturun ve yönetin.
+              Create and manage your token in just a few steps.
             </p>
           </div>
 
@@ -210,7 +210,7 @@ const Index = () => {
             <CardHeader className="text-center pb-6">
               <CardTitle className="flex items-center justify-center gap-2 text-2xl">
                 <Rocket className="w-6 h-6 text-primary" />
-                Token Bilgileri
+                Token Information
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -218,12 +218,12 @@ const Index = () => {
                 {/* Token Adı */}
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-sm font-medium text-foreground">
-                    Token Adı
+                    Token Name
                   </Label>
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Örn: Pumpzilla"
+                    placeholder="Enter token name"
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     className="bg-input/50 border-border/50 focus:border-primary/50 focus:ring-primary/20"
@@ -239,12 +239,12 @@ const Index = () => {
                 {/* Token Sembolü */}
                 <div className="space-y-2">
                   <Label htmlFor="symbol" className="text-sm font-medium text-foreground">
-                    Token Sembolü
+                    Token Symbol
                   </Label>
                   <Input
                     id="symbol"
                     type="text"
-                    placeholder="Örn: PZL"
+                    placeholder="Enter symbol"
                     value={formData.symbol}
                     onChange={(e) => setFormData(prev => ({ ...prev, symbol: e.target.value.toUpperCase() }))}
                     maxLength={5}
@@ -261,12 +261,12 @@ const Index = () => {
                 {/* Toplam Arz */}
                 <div className="space-y-2">
                   <Label htmlFor="totalSupply" className="text-sm font-medium text-foreground">
-                    Toplam Arz
+                    Total Supply
                   </Label>
                   <Input
                     id="totalSupply"
                     type="number"
-                    placeholder="Örn: 1000000"
+                    placeholder="Enter total supply"
                     value={formData.totalSupply}
                     onChange={(e) => setFormData(prev => ({ ...prev, totalSupply: e.target.value }))}
                     min="1"
@@ -283,7 +283,7 @@ const Index = () => {
                 {/* Token Görseli */}
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-foreground">
-                    Token Görseli (Opsiyonel)
+                    Token Logo (Optional)
                   </Label>
                   
                   {!imagePreview ? (
@@ -302,10 +302,10 @@ const Index = () => {
                           </div>
                           <div>
                             <p className="text-sm font-medium text-foreground">
-                              Token logosu yükleyin
+                              Upload token logo
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
-                              PNG, JPG, GIF (Maks. 5MB)
+                              PNG, JPG, GIF (Max. 5MB)
                             </p>
                           </div>
                           <Button
@@ -315,7 +315,7 @@ const Index = () => {
                             className="pointer-events-none border-primary/30 text-primary"
                           >
                             <ImageIcon className="w-4 h-4 mr-2" />
-                            Görsel Seç
+                            Select Image
                           </Button>
                         </div>
                       </div>
@@ -327,7 +327,7 @@ const Index = () => {
                           <div className="relative w-16 h-16 bg-muted/50 rounded-lg overflow-hidden flex-shrink-0">
                             <img
                               src={imagePreview}
-                              alt="Token önizleme"
+                              alt="Token preview"
                               className="w-full h-full object-cover"
                             />
                           </div>
@@ -366,7 +366,7 @@ const Index = () => {
                   <Alert className="border-destructive/20 bg-destructive/10">
                     <AlertTriangle className="h-4 w-4 text-destructive" />
                     <AlertDescription className="text-destructive">
-                      Token oluşturmak için cüzdanınızu bağlayın
+                      Connect your wallet to create a token
                     </AlertDescription>
                   </Alert>
                 )}
@@ -380,12 +380,12 @@ const Index = () => {
                   {isSubmitting ? (
                     <div className="flex items-center gap-2">
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Token Oluşturuluyor...
+                      Creating Token...
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
                       <Coins className="w-5 h-5" />
-                      Token Oluştur
+                      Create Token
                     </div>
                   )}
                 </Button>
@@ -405,11 +405,11 @@ const Index = () => {
                 <div>
                   <h3 className="font-semibold text-foreground mb-1 flex items-center gap-2">
                     <Shield className="w-4 h-4" />
-                    Test Modu Aktif
+                    Test Mode Active
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    Bu işlem deneme amaçlıdır, henüz mainnet'te değildir. 
-                    Gerçek token deployment'ı için Somnia Network mainnet'ini bekleyin.
+                    This operation is for testing purposes and is not yet on mainnet. 
+                    Wait for Somnia Network mainnet for actual token deployment.
                   </p>
                 </div>
               </div>
